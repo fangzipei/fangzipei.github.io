@@ -18,10 +18,7 @@
             <a href="../../index.html" class="logo"><strong>Zone</strong>の快乐小屋</a>
             <ul class="icons">
               <li
-                ><a
-                  href="https://twitter.com/zonefang88"
-                  target="_blank"
-                  class="icon brands fa-twitter"
+                ><a href="https://twitter.com/zonefang88" target="_blank" class="icon brands fa-twitter"
                   ><span class="label">Twitter</span></a
                 ></li
               >
@@ -34,18 +31,12 @@
                 ></li
               >
               <li
-                ><a
-                  href="https://github.com/fangzipei"
-                  target="_blank"
-                  class="icon brands fa-github"
+                ><a href="https://github.com/fangzipei" target="_blank" class="icon brands fa-github"
                   ><span class="label">GitHub</span></a
                 ></li
               >
               <li
-                ><a
-                  href="https://www.zhihu.com/people/fang-zi-pei-54"
-                  target="_blank"
-                  class="icon brands fa-zhihu"
+                ><a href="https://www.zhihu.com/people/fang-zi-pei-54" target="_blank" class="icon brands fa-zhihu"
                   ><span class="label">ZhiHu</span></a
                 ></li
               >
@@ -58,96 +49,101 @@
           <!-- Content -->
           <section>
             <header class="main">
-              <h1>服务器配置</h1>
+              <h1>JAVA相关命令</h1>
             </header>
+            <h2>jps</h2>
+            <p>jps用于展示当前系统中该用户有权访问的所有java进程情况。</p>
+            <strong>jps语法如下：</strong>
+            <ul>
+              <li
+                >jps [options] [hostid]。options为命令行参数，hostid指特定主机，可以是ip地址、域名, 也可以指定具体协议和端口。</li
+              >
+            </ul>
+            <strong>jps的options参数如下：</strong>
+            <pre>
+              <code>
+-q 只输出PID。
+-m 输出传递给 main 方法的参数。对于嵌入式 JVM，输出可能为空。
+-l 输出应用程序主类的完整包名或应用程序 JAR 文件的完整路径名。
+-v 输出传递给 JVM 的参数。
+-V 通过 flags 文件（.hotspotrc 文件或 -XX:Flags=&lt;filename&gt; 参数指定的文件）输出传递给 JVM
+  的参数。本参数不常用。              
+-J[option] 将选项传递给jps调用的java启动器。例如，-J-Xms48m是将启动内存设置为 48 兆字节。
+              </code>
+            </pre>
 
-            <!-- <span class="image main"><img src="images/pic11.jpg" alt="" /></span> -->
-
+            <strong>原理</strong>
             <p
-              >目前服务器是使用大学时用的笔记本搭建的，配置是：<br />
-              CPU i5-6300HQ@2.3GHz<br />
-              RAM 4G+4G
-            </p>
-            <p></p>
+              >java程序在启动以后，会在java.io.tmpdir指定的目录下，就是临时文件夹里，生成一个类似于hsperfdata_UserName的文件夹，这个文件夹里（在Linux中为/tmp/hsperfdata_{userName}）有几个名字为java进程的pid的文件。因此，列出当前运行的java进程，只是把这个目录里的文件名列一下而已。
+              至于系统的参数什么，解析这几个文件就可以获得。</p
+            >
+            <strong>失效的情况</strong>
+            <p>现象：可能在服务器上会出现用“ps -ef | grep java”可以看到启动的java进程，用jps却查看不到该进程的pid。</p>
             <p
-              >Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis
-              dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim
-              auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien
-              risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis,
-              hendrerit tristique lorem ipsum dolor.</p
+              >分析：jps、jconsole、jvisualvm等工具的数据来源就是上面说到的java.io.tmpdir参数指定的目录下的文件（如/tmp/hsperfdata_userName/pid)。当该文件不存在，或者无法读取时就会出现jps无法查看该进程号，jconsole无法监控等问题。</p
+            >
+            <p>具体原因可能是：</p>
+            <ul>
+              <li
+                ><b>磁盘读写、目录权限问题。</b
+                >若该用户没有权限写/tmp目录或是磁盘已满，则无法创建/tmp/hsperfdata_userName/pid文件。或该文件已经生成，但用户没有读权限。</li
+              >
+              <li
+                ><b>临时文件丢失，被删除或是定期清理。</b
+                >对于linux机器，一般都会存在定时任务对临时文件夹进行清理，导致/tmp目录被清空。常用的可能定时删除临时目录的工具为crontab、redhat的tmpwatch、ubuntu的tmpreaper等等</li
+              >
+              <li
+                ><b>java进程信息文件存储地址被设置为不在/tmp目录下。</b>
+                通过-Djava.io.tmpdir设置的目录不是/tmp，而jps、jconsole都只会从/tmp目录读取，而无法从设置后的目录读物信息。</li
+              >
+            </ul>
+            <p
+              >参考：<i><a href="https://zhuanlan.zhihu.com/p/475571604">jps命令详解</a></i
+              >【知乎】</p
             >
 
-            <hr class="major" />
+            <hr class="main" />
 
-            <h2>Interdum sed dapibus</h2>
-            <p
-              >Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus.
-              Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem
-              diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id
-              ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit.
-              Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus,
-              commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis,
-              hendrerit.</p
-            >
-            <p
-              >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum
-              facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
-              inceptos himenaeos. Etiam tristique libero eu nibh porttitor fermentum. Nullam
-              venenatis erat id vehicula viverra. Nunc ultrices eros ut ultricies condimentum.
-              Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor. Nunc lorem
-              mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi
-              tristique senectus et netus et malesuada fames ac turpis egestas. In non lorem sit
-              amet elit placerat maximus. Pellentesque aliquam maximus risus, vel sed vehicula.
-              Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis
-              dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim
-              auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien
-              risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis,
-              hendrerit tristique lorem ipsum dolor.</p
-            >
-
-            <hr class="major" />
-
-            <h2>Magna etiam veroeros</h2>
-            <p
-              >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum
-              facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
-              inceptos himenaeos. Etiam tristique libero eu nibh porttitor fermentum. Nullam
-              venenatis erat id vehicula viverra. Nunc ultrices eros ut ultricies condimentum.
-              Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor. Nunc lorem
-              mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi
-              tristique senectus et netus et malesuada fames ac turpis egestas. In non lorem sit
-              amet elit placerat maximus. Pellentesque aliquam maximus risus, vel sed vehicula.</p
-            >
-            <p
-              >Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis
-              dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim
-              auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien
-              risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis,
-              hendrerit tristique lorem ipsum dolor.</p
-            >
-
-            <hr class="major" />
-
-            <h2>Lorem aliquam bibendum</h2>
-            <p
-              >Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus.
-              Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem
-              diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id
-              ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit.
-              Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus,
-              commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis,
-              hendrerit.</p
-            >
-            <p
-              >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum
-              facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
-              inceptos himenaeos. Etiam tristique libero eu nibh porttitor fermentum. Nullam
-              venenatis erat id vehicula viverra. Nunc ultrices eros ut ultricies condimentum.
-              Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor. Nunc lorem
-              mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi
-              tristique senectus et netus et malesuada fames ac turpis egestas. In non lorem sit
-              amet elit placerat maximus. Pellentesque aliquam maximus risus, vel sed vehicula.</p
-            >
+            <h2>jstat</h2>
+            <p>jstat可以查看Java程序运行时相关信息，可以通过它查看堆信息的相关情况</p>
+            <strong>jstat语法如下：</strong>
+            <ul>
+              <li>jstat -&lt;options&gt; [-t] [-h&lt;lines&gt;] &lt;vmid&gt; [&lt;interval&gt; [&lt;count&gt;]]</li>
+            </ul>
+            <strong>jstat的options参数如下：</strong>
+            <pre><code>
+-class：显示ClassLoader的相关信息 
+-compiler：显示JIT编译的相关信息 
+-gc：显示与GC相关信息
+-gccapacity：显示各个代的容量和使用情况
+-gccause：显示垃圾收集相关信息（同-gcutil），同时显示最后一次或当前正在发生的垃圾收集的诱发原因
+-gcnew：显示新生代信息 
+-gcnewcapacity：显示新生代大小和使用情况 
+-gcold：显示老年代信息
+-gcoldcapacity：显示老年代大小 
+-gcpermcapacity：显示永久代大小 
+-gcutil：显示垃圾收集信息
+-printcompilation：输出JIT编译的方法信息 
+-t：在输出信息前加上一个Timestamp列，显示程序的运行时间
+-h：可以在周期性数据输出后，输出多少行数据后，跟着一个表头信息 
+interval：用于指定输出统计数据的周期，单位为毫秒
+count：用于指定一个输出多少次数据
+            </code></pre>
+            <img src="../../images/jstat-example.png" />
+            <p>上图各列的含义：</p>
+            <pre><code>S0C：0号Survive区域的总大小
+S0U：0号Survive区域当前已用大小
+EC：新生代Eden区域的总大小
+EU：新生代Eden区域已用的大小
+OC：老年代区域的总大小
+OU：老年代区域已用的大小
+MC：方法区的总大小
+MU：方法区已用的大小
+YGC：新生代GC的次数
+YGT：新生代GC的总耗时
+FGC：Full GC的次数
+FGT：Full GC的总耗时
+            </code></pre>
           </section>
         </div>
       </div>
@@ -172,14 +168,14 @@
               <li>
                 <span class="opener">日常生活</span>
                 <ul>
-                  <li><a href="servers.html">服务器配置</a></li>
+                  <li><a href="../daily-life/servers.html">JVM调优</a></li>
                 </ul>
               </li>
               <li>
                 <span class="opener">Java</span>
                 <ul>
-                  <li><a href="../java/jvm-improve.html">JVM调优</a></li>
-                  <li><a href="../java/java-command.html">JAVA相关命令</a></li>
+                  <li><a href="jvm-improve.html">JVM调优</a></li>
+                  <li><a href="java-command.html">JAVA相关命令</a></li>
                 </ul>
               </li>
               <li>
