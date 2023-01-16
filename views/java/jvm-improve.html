@@ -119,7 +119,8 @@
               <li>实时监控：Linux命令（top，ps等）、JDK命令（jps，jstat等）、实时监控平台（JConsole等）。</li>
               <li>事后监控：GC日志分析、dump堆转储快照分析</li>
             </ul>
-            <h3>4.2.参数设置</h3>
+
+            <h3>4.2.监控参数设置</h3>
             <ol>
               <li>JVM启动时增加参数：</li>
               <pre><code># 出现OOME时生成堆dump:
@@ -132,8 +133,72 @@
 jmap -dump:format=b,file=testmap.dump 9257</code></pre>
             </ol>
             <p
-              >第一种为事后方式，只有在JVM出现OOM问题后才会生成堆栈信息；第二种是在执行时使用的，使用后JVM会暂停服务，会对服务的提供产生影响。</p
+              >第一种为事后方式，只有在JVM出现OOM问题后才会生成堆栈信息；第二种是在执行时使用的，使用后JVM会暂停服务，会对服务的提供产生影响。推荐还是使用第一种方式。</p
             >
+
+            <h3>4.3.调试相关命令</h3>
+            <p>主要有以下几种：</p>
+            <ul>
+              <li>jps：用于展示当前系统中该用户有权访问的java进程。</li>
+              <li>jstat：可以查看Java程序运行时相关信息，可以通过它查看堆信息的相关情况。</li>
+              <li>jinfo：可以用来查看正在运行的java程序的扩展参数，甚至支持运行时修改部分参数。</li>
+              <li>jmap：可以查看堆内存使用状况，一般结合jhat使用。</li>
+              <li>jhat：解析Java堆转储文件并启动一个 web server，然后用浏览器来查看、浏览 dump 出来的 heap。</li>
+              <li
+                >jstack：用于生成java虚拟机当前时刻的线程快照。线程快照是当前java虚拟机内每一条线程正在执行的方法堆栈的集合，生成线程快照的主要目的是定位线程出现长时间停顿的原因，如线程间死锁、死循环、请求外部资源导致的长时间等待等。
+                线程出现停顿的时候通过jstack来查看各个线程的调用堆栈，就可以知道没有响应的线程到底在后台做什么事情，或者等待什么资源。</li
+              >
+              <li
+                >jconsole：可以从命令行或在 GUI shell 中运行。您可以轻松地使用 JConsole来监控 Java 应用程序性能和跟踪Java
+                中的代码。</li
+              >
+            </ul>
+
+            <h3>4.4.JVM参数调优</h3>
+            <p
+              >在分析过报告后便需要对报告中有问题的部分进行调优，而除了程序调优外，影响最大的便是JVM的参数调优了，如设置堆大小等。<br />
+              JVM参数主要分为：标准参数、非标准参数、不稳定参数。</p
+            >
+            <ol>
+              <li
+                >标准参数，顾名思义，标准参数中包括功能以及输出的结果都是很稳定的，基本上不会随着JVM版本的变化而变化。它以-开头，如：java
+                -jar、java -help、java -version等。</li
+              >
+              <li
+                >非标准参数以-X开头，是标准参数的扩展。对应前面讲的标准化参数，这是非标准化参数。表示在将来的JVM版本中可能会发生改变，但是这类以-X开始的参数变化的比较小。
+                我们可以通过 Java -X 命令来检索所有-X 参数。常见的非标准参数有：</li
+              >
+              <img src="../../images/Java -X.jpg" />
+              <li
+                >不稳定参数相对来说不稳定，随着JVM版本的变化可能会发生变化，主要用于JVM调优和debug。<br />
+                不稳定参数以-XX开头，此类参数的设置很容易引起JVM性能上的差异，使JVM存在极大的不稳定性。如果此类参数设置合理将大大提高JVM的性能及稳定性。<br />
+                参数分析：</li
+              >
+              <pre>
+              <code
+                >-Xms4g：初始化堆内存大小为4GB，ms是memory start的简称，等价于-XX:InitialHeapSize。
+-Xmx4g：堆内存最大值为4GB，mx是memory max的简称，等价于-XX:MaxHeapSize。
+-Xmn1200m：设置年轻代大小为1200MB。增大年轻代后，将会减小老年代大小。此值对系统性能影响较大，Sun官方推荐配置为整个堆的3/8。
+-Xss512k：设置每个线程的堆栈大小。JDK5.0以后每个线程堆栈大小为1MB，以前每个线程堆栈大小为256K。
+    应根据应用线程所需内存大小进行调整。在相同物理内存下，减小这个值能生成更多的线程。
+    但是操作系统对一个进程内的线程数还是有限制的，不能无限生成，经验值在3000~5000左右。
+-XX:NewRatio=4：设置年轻代（包括Eden和两个Survivor区）与老年代的比值（除去持久代）。
+    设置为4，则年轻代与老年代所占比值为1：4，年轻代占整个堆栈的1/5
+-XX:SurvivorRatio=8：设置年轻代中Eden区与Survivor区的大小比值。
+    设置为8，则两个Survivor区与个Eden区的比值为2:8，个Survivor区占整个年轻代的1/10
+-XX:PermSize=100m：初始化永久代大小为100MB。 -XX:MaxPermSize=256m：设置持久代大小为256MB。
+-XX:MaxTenuringThreshold=15：设置垃圾最大年龄。
+    如果设置为0的话，则年轻代对象不经过Survivor区，直接进入老年代。对于老年代比较多的应用，可以提高效率。
+    如果将此值设置为个较大值，则年轻代对象会在Survivor区进行多次复制，这样可以增加对象在年轻代的存活时间，增加在年轻代即被回收的概率。
+-XX:MaxDirectMemorySize=1G：直接内存。报java.lang.OutOfMemoryError: Direct buffermemory异常可以上调这个值。
+-XX:+DisableExplicitGC：禁止运行期显式地调用System.gc()来触发fulll GC。 注意: Java
+    RMI的定时GC触发机制可通过配置-Dsun.rmi.dgc.server.gcInterval=86400来控制触发的时间。
+-XX:CMSInitiatingOccupancyFraction=60：老年代内存回收阈值，默认值为68。
+-XX:ConcGCThreads=4：CMS垃圾回收器并行线程线，推荐值为CPU核心数。
+-XX:ParallelGCThreads=8：新生代并行收集器的线程数。
+-XX:CMSMaxAbortablePrecleanTime=500：当abortable-preclean预清理阶段执行达到这个时间时就会结束。</code
+              ></pre>
+            </ol>
           </section>
         </div>
       </div>
