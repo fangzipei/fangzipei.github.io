@@ -49,14 +49,21 @@
           <!-- Content -->
           <section>
             <header class="main">
-              <h1>服务器配置</h1>
+              <h1>JVM调优-JIT优化</h1>
             </header>
-            <!-- <span class="image main"><img src="images/pic11.jpg" alt="" /></span> -->
             <p>
-              目前服务器是使用大学时用的笔记本搭建的，配置是：<br />
-              CPU i5-6300HQ@2.3GHz<br />
-              RAM 4G+4G
+              详见：
+              <i><a href="https://blog.csdn.net/yx444535180/article/details/113518612">JIT使用及优化</a></i>
+              【CSDN】
             </p>
+            <!-- <h2>1.背景介绍</h2>
+            <p>
+              《深入理解Java虚拟机中》中对Java堆内存有以下描述：随着JIT编译期的发展与逃逸分析技术逐渐成熟，栈上分配、标量替换优化技术将会导致一些微妙的变化，所有的对象都分配到堆上也渐渐变得不那么[绝对]了
+              在Java虚拟机中，对象是在Java堆中分配内存的，这是一个普遍认知。但是，有一种特殊情况，那就是如果经过逃逸分析(Escape
+              Analysls)后发现，一个对象并没有逃逸出方法的话，那么就可能被优化成栈上分配。这样就无需在堆上分配，也就不需要进行垃圾回收了。这也是最常见的堆外存储技术。
+            </p>
+            <p></p>
+            <img src="../../images/编译&解释.png" /> -->
           </section>
         </div>
       </div>
@@ -81,15 +88,15 @@
               <li>
                 <span class="opener">日常生活</span>
                 <ul>
-                  <li><a href="servers.html">服务器配置</a></li>
+                  <li><a href="../daily-life/servers.html">JVM调优</a></li>
                 </ul>
               </li>
               <li>
                 <span class="opener">Java</span>
                 <ul>
-                  <li><a href="../java/jvm-improve.html">JVM调优</a></li>
-                  <li><a href="../java/jvm-improve-jit.html">JVM调优-JIT优化</a></li>
-                  <li><a href="../java/java-command.html">JAVA相关命令</a></li>
+                  <li><a href="jvm-improve.html">JVM调优</a></li>
+                  <li><a href="jvm-improve-jit.html">JVM调优-JIT优化</a></li>
+                  <li><a href="java-command.html">JAVA相关命令</a></li>
                 </ul>
               </li>
               <li>

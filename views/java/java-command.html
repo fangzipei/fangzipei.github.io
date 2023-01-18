@@ -15,31 +15,35 @@
         <div class="inner">
           <!-- Header -->
           <header id="header">
-            <a href="../../index.html" class="logo"><strong>Zone</strong>の快乐小屋</a>
+            <a href="../../index.html" class="logo">
+              <strong>Zone</strong>
+              の快乐小屋
+            </a>
             <ul class="icons">
-              <li
-                ><a href="https://twitter.com/zonefang88" target="_blank" class="icon brands fa-twitter"
-                  ><span class="label">Twitter</span></a
-                ></li
-              >
-              <li
-                ><a
+              <li>
+                <a href="https://twitter.com/zonefang88" target="_blank" class="icon brands fa-twitter">
+                  <span class="label">Twitter</span>
+                </a>
+              </li>
+              <li>
+                <a
                   href="https://www.facebook.com/profile.php?id=100029807920594"
                   target="_blank"
                   class="icon brands fa-facebook-f"
-                  ><span class="label">Facebook</span></a
-                ></li
-              >
-              <li
-                ><a href="https://github.com/fangzipei" target="_blank" class="icon brands fa-github"
-                  ><span class="label">GitHub</span></a
-                ></li
-              >
-              <li
-                ><a href="https://www.zhihu.com/people/fang-zi-pei-54" target="_blank" class="icon brands fa-zhihu"
-                  ><span class="label">ZhiHu</span></a
-                ></li
-              >
+                >
+                  <span class="label">Facebook</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/fangzipei" target="_blank" class="icon brands fa-github">
+                  <span class="label">GitHub</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.zhihu.com/people/fang-zi-pei-54" target="_blank" class="icon brands fa-zhihu">
+                  <span class="label">ZhiHu</span>
+                </a>
+              </li>
               <!-- <li
                 ><a href="#" target="_blank" class="icon brands fa-medium-m"><span class="label">Medium</span></a></li
               > -->
@@ -51,13 +55,14 @@
             <header class="main">
               <h1>JAVA相关命令</h1>
             </header>
+
             <h2>jps</h2>
             <p>jps用于展示当前系统中该用户有权访问的所有java进程情况。</p>
             <strong>jps语法如下：</strong>
             <ul>
-              <li
-                >jps [options] [hostid]。options为命令行参数，hostid指特定主机，可以是ip地址、域名, 也可以指定具体协议和端口。</li
-              >
+              <li>
+                jps [options] [hostid]。options为命令行参数，hostid指特定主机，可以是ip地址、域名, 也可以指定具体协议和端口。
+              </li>
             </ul>
             <strong>jps的options参数如下：</strong>
             <pre>
@@ -71,36 +76,36 @@
 -J[option] 将选项传递给jps调用的java启动器。例如，-J-Xms48m是将启动内存设置为 48 兆字节。
               </code>
             </pre>
-
             <strong>原理</strong>
-            <p
-              >java程序在启动以后，会在java.io.tmpdir指定的目录下，就是临时文件夹里，生成一个类似于hsperfdata_UserName的文件夹，这个文件夹里（在Linux中为/tmp/hsperfdata_{userName}）有几个名字为java进程的pid的文件。因此，列出当前运行的java进程，只是把这个目录里的文件名列一下而已。
-              至于系统的参数什么，解析这几个文件就可以获得。</p
-            >
+            <p>
+              java程序在启动以后，会在java.io.tmpdir指定的目录下，就是临时文件夹里，生成一个类似于hsperfdata_UserName的文件夹，这个文件夹里（在Linux中为/tmp/hsperfdata_{userName}）有几个名字为java进程的pid的文件。因此，列出当前运行的java进程，只是把这个目录里的文件名列一下而已。
+              至于系统的参数什么，解析这几个文件就可以获得。
+            </p>
             <strong>失效的情况</strong>
             <p>现象：可能在服务器上会出现用“ps -ef | grep java”可以看到启动的java进程，用jps却查看不到该进程的pid。</p>
-            <p
-              >分析：jps、jconsole、jvisualvm等工具的数据来源就是上面说到的java.io.tmpdir参数指定的目录下的文件（如/tmp/hsperfdata_userName/pid)。当该文件不存在，或者无法读取时就会出现jps无法查看该进程号，jconsole无法监控等问题。</p
-            >
+            <p>
+              分析：jps、jconsole、jvisualvm等工具的数据来源就是上面说到的java.io.tmpdir参数指定的目录下的文件（如/tmp/hsperfdata_userName/pid)。当该文件不存在，或者无法读取时就会出现jps无法查看该进程号，jconsole无法监控等问题。
+            </p>
             <p>具体原因可能是：</p>
             <ul>
-              <li
-                ><b>磁盘读写、目录权限问题。</b
-                >若该用户没有权限写/tmp目录或是磁盘已满，则无法创建/tmp/hsperfdata_userName/pid文件。或该文件已经生成，但用户没有读权限。</li
-              >
-              <li
-                ><b>临时文件丢失，被删除或是定期清理。</b
-                >对于linux机器，一般都会存在定时任务对临时文件夹进行清理，导致/tmp目录被清空。常用的可能定时删除临时目录的工具为crontab、redhat的tmpwatch、ubuntu的tmpreaper等等</li
-              >
-              <li
-                ><b>java进程信息文件存储地址被设置为不在/tmp目录下。</b>
-                通过-Djava.io.tmpdir设置的目录不是/tmp，而jps、jconsole都只会从/tmp目录读取，而无法从设置后的目录读物信息。</li
-              >
+              <li>
+                <b>磁盘读写、目录权限问题。</b>
+                若该用户没有权限写/tmp目录或是磁盘已满，则无法创建/tmp/hsperfdata_userName/pid文件。或该文件已经生成，但用户没有读权限。
+              </li>
+              <li>
+                <b>临时文件丢失，被删除或是定期清理。</b>
+                对于linux机器，一般都会存在定时任务对临时文件夹进行清理，导致/tmp目录被清空。常用的可能定时删除临时目录的工具为crontab、redhat的tmpwatch、ubuntu的tmpreaper等等
+              </li>
+              <li>
+                <b>java进程信息文件存储地址被设置为不在/tmp目录下。</b>
+                通过-Djava.io.tmpdir设置的目录不是/tmp，而jps、jconsole都只会从/tmp目录读取，而无法从设置后的目录读物信息。
+              </li>
             </ul>
-            <p
-              >参考：<i><a href="https://zhuanlan.zhihu.com/p/475571604">jps命令详解</a></i
-              >【知乎】</p
-            >
+            <p>
+              参考：
+              <i><a href="https://zhuanlan.zhihu.com/p/475571604">jps命令详解</a></i>
+              【知乎】
+            </p>
 
             <hr class="main" />
 
@@ -144,6 +149,63 @@ YGT：新生代GC的总耗时
 FGC：Full GC的次数
 FGT：Full GC的总耗时
             </code></pre>
+
+            <hr class="main" />
+
+            <h2>jinfo</h2>
+            <p>
+              jinfo可以实时地查看和调整虚拟机各项参数。前面的jps只能够查看虚拟机启动时的
+              <b>显式</b>
+              指定参数，对于未被显式指定的参数的系统默认值，就可以通过jinfo的-flag进行查看了。
+            </p>
+            <strong>jinfo语法如下：</strong>
+            <pre>
+              <code>jinfo [option] pid
+              </code>
+            </pre>
+            <strong>jinfo的option参数如下：</strong>
+            <pre><code>no option: 打印命令行标志和系统属性的【name-value】对。
+-flag name: 打印指定命令行标志的【name-value】对。 
+-flag [+|-] name: 启用或禁用指定的命令行标志。表示启用，- 表示禁用。
+-flag name=value: 将指定的命令行标志设置为指定的值。
+-flags: 打印传递给JVM的命令行标志。
+-sysprops: 以【name-value】对的形式打印Java系统属性。
+-h or help
+            </code></pre>
+
+            <hr class="main" />
+
+            <h2>jmap</h2>
+            <p>jmap是用于生成堆转储快照即dump文件的命令</p>
+            <strong>jmap语法如下：</strong>
+            <pre><code>jmap [option] vmid</code></pre>
+            <strong>jmap的option如下：</strong>
+            <img src="../../images/jmap options.jpg" />
+
+            <hr class="main" />
+
+            <h2>jhat</h2>
+            <p>
+              jhat是Sun
+              JDK提供的一款虚拟机堆转储快照分析工具，用于与jmap搭配使用来对我们生成的dump文件进行分析但事实上，这款工具并没有那么好用，所以如果不是我们手上没有其他工具可用，一般是不对直接使用jhat来分析dump文件的。
+            </p>
+
+            <hr class="main" />
+
+            <h2>jstack</h2>
+            <p>
+              jstack用于生成虚拟机当前时刻的线程快照(线程快照就是当前虚拟机内每一条线程正在执行的方法堆栈的集合)。生成线程快照的主要目的是定位线程出现长时间停顿的原因，如线程间死锁、死循环、请求外部资源导致的长时间等待都是导致线程出现长时间停顿的常见原因。线程出现停顿时通过jstack来查看各个线程的调用堆栈，就可以直到没有相应的线程到底在后台做些什么事情，或者等待什么资源。
+            </p>
+            <strong>jstack语法如下：</strong>
+            <pre><code>jstack [option] vmid</code></pre>
+            <strong>jstack的option如下：</strong>
+            <pre><code>-F	当正常输出的请求不被响应时，强制输出线程堆栈
+-l	除堆栈外，显示关于锁的附加信息
+-m	如果调用本地方法的话，可以显示C/C++的堆栈</code></pre>
+            <p>
+              需要注意的是，jstack中<b>记录</b>的线程id是16位的（vmid仍是10位的），但top、jps获得是10位的，所以中间需要进行转换。<br />
+              你也可以使用jstack > filename 将jstack内容存入文件，再从文件中进行查找。
+            </p>
           </section>
         </div>
       </div>
@@ -164,17 +226,18 @@ FGT：Full GC的总耗时
               <h2>目录</h2>
             </header>
             <ul>
-              <li><a href="index.html">首页</a></li>
+              <li><a href="../../index.html">首页</a></li>
               <li>
                 <span class="opener">日常生活</span>
                 <ul>
-                  <li><a href="../daily-life/servers.html">JVM调优</a></li>
+                  <li><a href="../daily-life/servers.html">2022游戏回顾</a></li>
                 </ul>
               </li>
               <li>
                 <span class="opener">Java</span>
                 <ul>
                   <li><a href="jvm-improve.html">JVM调优</a></li>
+                  <li><a href="jvm-improve-jit.html">JVM调优-JIT优化</a></li>
                   <li><a href="java-command.html">JAVA相关命令</a></li>
                 </ul>
               </li>

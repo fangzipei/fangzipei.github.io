@@ -4,7 +4,7 @@ module.exports = {
   printWidth: 130,
   tabWidth: 2,
   semi: true,
-  htmlWhitespaceSensitivity: 'strict',
+  htmlWhitespaceSensitivity: 'css',
   arrowParens: 'avoid',
   bracketSpacing: true,
   proseWrap: 'preserve',

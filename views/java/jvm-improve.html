@@ -17,29 +17,29 @@
           <header id="header">
             <a href="../../index.html" class="logo"><strong>Zone</strong>の快乐小屋</a>
             <ul class="icons">
-              <li
-                ><a href="https://twitter.com/zonefang88" target="_blank" class="icon brands fa-twitter"
+              <li>
+                <a href="https://twitter.com/zonefang88" target="_blank" class="icon brands fa-twitter"
                   ><span class="label">Twitter</span></a
-                ></li
-              >
-              <li
-                ><a
+                >
+              </li>
+              <li>
+                <a
                   href="https://www.facebook.com/profile.php?id=100029807920594"
                   target="_blank"
                   class="icon brands fa-facebook-f"
                   ><span class="label">Facebook</span></a
-                ></li
-              >
-              <li
-                ><a href="https://github.com/fangzipei" target="_blank" class="icon brands fa-github"
+                >
+              </li>
+              <li>
+                <a href="https://github.com/fangzipei" target="_blank" class="icon brands fa-github"
                   ><span class="label">GitHub</span></a
-                ></li
-              >
-              <li
-                ><a href="https://www.zhihu.com/people/fang-zi-pei-54" target="_blank" class="icon brands fa-zhihu"
+                >
+              </li>
+              <li>
+                <a href="https://www.zhihu.com/people/fang-zi-pei-54" target="_blank" class="icon brands fa-zhihu"
                   ><span class="label">ZhiHu</span></a
-                ></li
-              >
+                >
+              </li>
               <!-- <li
                 ><a href="#" target="_blank" class="icon brands fa-medium-m"><span class="label">Medium</span></a></li
               > -->
@@ -55,10 +55,10 @@
             <!-- <span class="image main"><img src="images/pic11.jpg" alt="" /></span> -->
 
             <h2>1.调优原则</h2>
-            <p
-              >在想要JVM调优前一定要清楚地认识到一件事：JVM调优是Java性能优化的最后一步，是万不得已才会执行的步骤！<br />
-              在执行JVM调优前请确保已经做了以下几件事：</p
-            >
+            <p>
+              在想要JVM调优前一定要清楚地认识到一件事：JVM调优是Java性能优化的最后一步，是万不得已才会执行的步骤！<br />
+              在执行JVM调优前请确保已经做了以下几件事：
+            </p>
             <ul>
               <li>排查了数据库瓶颈问题，并已优化。包括但不限于索引优化、表结构优化、分库分表等。</li>
               <li>考虑了扩容的情况，横向和纵向都考虑了。</li>
@@ -75,10 +75,10 @@
               <li>停顿时间：执行垃圾收集（GC）时，程序的工作线程被暂停的时间。</li>
               <li>内存占用：系统运行时，JVM需要使用的内存。</li>
             </ul>
-            <p
-              >该三者构成了不可能三角，我们调优时无法同时满足它们三个，所以只能取其中两个进行调优。<br />
-              我们理应在业务的帮助下正确选取调优指标，并将其优化至调优目标。如：</p
-            >
+            <p>
+              该三者构成了不可能三角，我们调优时无法同时满足它们三个，所以只能取其中两个进行调优。<br />
+              我们理应在业务的帮助下正确选取调优指标，并将其优化至调优目标。如：
+            </p>
             <ul>
               <li>Heap内存使用率 &lt;= 70%。</li>
               <li>Old Generation内存使用率&lt;= 70%。</li>
@@ -91,26 +91,26 @@
             <h3>3.1.堆设置</h3>
             <p>-Xms与-Xmx一般设置成相同的值，可以避免内存扩充的动作。</p>
             <h3>3.2.年轻代设置</h3>
-            <p
-              >参数-Xmn，1-1.5倍FullGC之后的老年代空间占用。<br />
+            <p>
+              参数-Xmn，1-1.5倍FullGC之后的老年代空间占用。<br />
 
               避免新生代设置过小，当新生代设置过小时，会带来两个问题：一是minor GC次数频繁，二是可能导致minor
               GC对象直接进老年代。当老年代内存不足时，会触发Full GC。
               避免新生代设置过大，当新生代设置过大时，会带来两个问题：一是老年代变小，可能导致Full GC频繁执行；二是 minor GC
-              执行回收的时间大幅度增加。</p
-            >
+              执行回收的时间大幅度增加。
+            </p>
             <h3>3.3.老年代设置</h3>
             <p>
               老年代使用并发收集器，所以其大小需要小心设置，一般要考虑并发会话率和会话持续时间等一些参数。<br />
               如果堆设置偏小，可能会造成内存碎片、高回收频率以及应用暂停。<br />
               如果堆设置偏大，则需要较长的收集时间 吞吐量优先的应用。<br />
-              一般吞吐量优先的应用都有一个较大的年轻代和一个较小的老年代。这样可以尽可能回收掉大部分短期对象，减少中期的对象，而老年代尽可能存放长期存活对象</p
-            >
+              一般吞吐量优先的应用都有一个较大的年轻代和一个较小的老年代。这样可以尽可能回收掉大部分短期对象，减少中期的对象，而老年代尽可能存放长期存活对象
+            </p>
             <h3>3.4.元空间设置</h3>
-            <p
-              >在jdk1.8及以后的版本中，元空间取代了永久代。相应的参数为-XX:MetaspaceSize和-XX:MaxMetaspaceSize；
-              通常设置为相同的值，避免运行时要不断扩展。</p
-            >
+            <p>
+              在jdk1.8及以后的版本中，元空间取代了永久代。相应的参数为-XX:MetaspaceSize和-XX:MaxMetaspaceSize；
+              通常设置为相同的值，避免运行时要不断扩展。
+            </p>
 
             <h2>4.调优步骤</h2>
             <h3>4.1.监控分析</h3>
@@ -132,9 +132,9 @@
 # 9257是指JVM的进程号
 jmap -dump:format=b,file=testmap.dump 9257</code></pre>
             </ol>
-            <p
-              >第一种为事后方式，只有在JVM出现OOM问题后才会生成堆栈信息；第二种是在执行时使用的，使用后JVM会暂停服务，会对服务的提供产生影响。推荐还是使用第一种方式。</p
-            >
+            <p>
+              第一种为事后方式，只有在JVM出现OOM问题后才会生成堆栈信息；第二种是在执行时使用的，使用后JVM会暂停服务，会对服务的提供产生影响。推荐还是使用第一种方式。
+            </p>
 
             <h3>4.3.调试相关命令</h3>
             <p>主要有以下几种：</p>
@@ -144,36 +144,36 @@ jmap -dump:format=b,file=testmap.dump 9257</code></pre>
               <li>jinfo：可以用来查看正在运行的java程序的扩展参数，甚至支持运行时修改部分参数。</li>
               <li>jmap：可以查看堆内存使用状况，一般结合jhat使用。</li>
               <li>jhat：解析Java堆转储文件并启动一个 web server，然后用浏览器来查看、浏览 dump 出来的 heap。</li>
-              <li
-                >jstack：用于生成java虚拟机当前时刻的线程快照。线程快照是当前java虚拟机内每一条线程正在执行的方法堆栈的集合，生成线程快照的主要目的是定位线程出现长时间停顿的原因，如线程间死锁、死循环、请求外部资源导致的长时间等待等。
-                线程出现停顿的时候通过jstack来查看各个线程的调用堆栈，就可以知道没有响应的线程到底在后台做什么事情，或者等待什么资源。</li
-              >
-              <li
-                >jconsole：可以从命令行或在 GUI shell 中运行。您可以轻松地使用 JConsole来监控 Java 应用程序性能和跟踪Java
-                中的代码。</li
-              >
+              <li>
+                jstack：用于生成java虚拟机当前时刻的线程快照。线程快照是当前java虚拟机内每一条线程正在执行的方法堆栈的集合，生成线程快照的主要目的是定位线程出现长时间停顿的原因，如线程间死锁、死循环、请求外部资源导致的长时间等待等。
+                线程出现停顿的时候通过jstack来查看各个线程的调用堆栈，就可以知道没有响应的线程到底在后台做什么事情，或者等待什么资源。
+              </li>
+              <li>
+                jconsole：可以从命令行或在 GUI shell 中运行。您可以轻松地使用 JConsole来监控 Java 应用程序性能和跟踪Java
+                中的代码。
+              </li>
             </ul>
 
             <h3>4.4.JVM参数调优</h3>
-            <p
-              >在分析过报告后便需要对报告中有问题的部分进行调优，而除了程序调优外，影响最大的便是JVM的参数调优了，如设置堆大小等。<br />
-              JVM参数主要分为：标准参数、非标准参数、不稳定参数。</p
-            >
+            <p>
+              在分析过报告后便需要对报告中有问题的部分进行调优，而除了程序调优外，影响最大的便是JVM的参数调优了，如设置堆大小等。<br />
+              JVM参数主要分为：标准参数、非标准参数、不稳定参数。
+            </p>
             <ol>
-              <li
-                >标准参数，顾名思义，标准参数中包括功能以及输出的结果都是很稳定的，基本上不会随着JVM版本的变化而变化。它以-开头，如：java
-                -jar、java -help、java -version等。</li
-              >
-              <li
-                >非标准参数以-X开头，是标准参数的扩展。对应前面讲的标准化参数，这是非标准化参数。表示在将来的JVM版本中可能会发生改变，但是这类以-X开始的参数变化的比较小。
-                我们可以通过 Java -X 命令来检索所有-X 参数。常见的非标准参数有：</li
-              >
+              <li>
+                标准参数，顾名思义，标准参数中包括功能以及输出的结果都是很稳定的，基本上不会随着JVM版本的变化而变化。它以-开头，如：java
+                -jar、java -help、java -version等。
+              </li>
+              <li>
+                非标准参数以-X开头，是标准参数的扩展。对应前面讲的标准化参数，这是非标准化参数。表示在将来的JVM版本中可能会发生改变，但是这类以-X开始的参数变化的比较小。
+                我们可以通过 Java -X 命令来检索所有-X 参数。常见的非标准参数有：
+              </li>
               <img src="../../images/Java -X.jpg" />
-              <li
-                >不稳定参数相对来说不稳定，随着JVM版本的变化可能会发生变化，主要用于JVM调优和debug。<br />
+              <li>
+                不稳定参数相对来说不稳定，随着JVM版本的变化可能会发生变化，主要用于JVM调优和debug。<br />
                 不稳定参数以-XX开头，此类参数的设置很容易引起JVM性能上的差异，使JVM存在极大的不稳定性。如果此类参数设置合理将大大提高JVM的性能及稳定性。<br />
-                参数分析：</li
-              >
+                参数分析：
+              </li>
               <pre>
               <code
                 >-Xms4g：初始化堆内存大小为4GB，ms是memory start的简称，等价于-XX:InitialHeapSize。
@@ -196,8 +196,9 @@ jmap -dump:format=b,file=testmap.dump 9257</code></pre>
 -XX:CMSInitiatingOccupancyFraction=60：老年代内存回收阈值，默认值为68。
 -XX:ConcGCThreads=4：CMS垃圾回收器并行线程线，推荐值为CPU核心数。
 -XX:ParallelGCThreads=8：新生代并行收集器的线程数。
--XX:CMSMaxAbortablePrecleanTime=500：当abortable-preclean预清理阶段执行达到这个时间时就会结束。</code
-              ></pre>
+-XX:CMSMaxAbortablePrecleanTime=500：当abortable-preclean预清理阶段执行达到这个时间时就会结束。
+-XX:+DoEscapeAnalysis：开启逃逸分析（1.7后默认开启）
+              </code></pre>
             </ol>
           </section>
         </div>
@@ -219,7 +220,7 @@ jmap -dump:format=b,file=testmap.dump 9257</code></pre>
               <h2>目录</h2>
             </header>
             <ul>
-              <li><a href="index.html">首页</a></li>
+              <li><a href="../../index.html">首页</a></li>
               <li>
                 <span class="opener">日常生活</span>
                 <ul>
@@ -230,6 +231,7 @@ jmap -dump:format=b,file=testmap.dump 9257</code></pre>
                 <span class="opener">Java</span>
                 <ul>
                   <li><a href="jvm-improve.html">JVM调优</a></li>
+                  <li><a href="jvm-improve-jit.html">JVM调优-JIT优化</a></li>
                   <li><a href="java-command.html">JAVA相关命令</a></li>
                 </ul>
               </li>
