@@ -207,4 +207,18 @@
       $window.triggerHandler('resize.sidebar-lock');
     });
   });
+
+  // 链接框链接的id号
+  var link_id = ['java_mock'];
+  // 链接框内容id号
+  var link_detail_id = ['java_mock_detail'];
+  // 链接网址
+  var link_url = ['/views/java/mock.html'];
+  // 链接内容
+  var link_url_event = ['Mock测试'];
+
+  for (var i = 0; i < link_id.length; i++) {
+    document.getElementById(link_id[i]).href = link_url[i];
+    document.getElementById(link_detail_id[i]).innerHTML = link_url_event[i];
+  }
 })(jQuery);
