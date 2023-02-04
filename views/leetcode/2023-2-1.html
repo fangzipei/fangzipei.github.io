@@ -49,28 +49,45 @@
           <!-- Content -->
           <section>
             <header class="main">
-              <h1>Mock测试</h1>
+              <h1>2023/2/1</h1>
             </header>
 
-            <h2>1.什么是Mock</h2>
             <p>
-              用于帮助开发或测试人员生成当前不能或较难生成的测试数据的工具。<br />
-              被mock的资源通常有以下特征：
+              <img
+                src="https://cdn.nlark.com/yuque/0/2023/png/32645868/1675246046082-5f50f65a-c3be-4bfd-bff6-5ce58b60d5cd.png#averageHue=%23ebebeb&amp;clientId=u3e2f8ab0-cbcb-4&amp;from=drop&amp;id=uf487b8fb&amp;name=GZGA7YN87VXM2IJNER9M%40%5D9.png&amp;originHeight=753&amp;originWidth=927&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=125475&amp;status=done&amp;style=none&amp;taskId=u0df2a949-75cd-4175-96db-3c901752e2c&amp;title="
+                alt="GZGA7YN87VXM2IJNER9M@]9.png"
+              />
             </p>
-            <ul>
-              <li>被测目标依赖该资源</li>
-              <li>该资源可能因为各种原因不稳定、返回结果不断变化或者并不总是能够获取到</li>
-              <li>该资源跟被测目标本身质量无关</li>
-              <li>
-                这些资源可能是一个外部或底层接口、一个系统、一组数据对象或者是一整套目标软件的工作环境等。通过 Mock
-                避免对外部真实资源的依赖实现对被测目标的孤立测试，从而大大降低测试的难度，节约测试成本。
-              </li>
-              <li>
-                需要注意的是利用 Mock
-                通过的测试与使用真实环境通过的测试毕竟还是有一定差别的。有些时候我们就是需要所测试的系统能够处理依赖所产生的各种情况，包括正常情况和异常情况，我们同样不能保证我们的Mock
-                可以模拟到每种这样的情况。因此只在确实有必要的情况下才运用Mock。
-              </li>
-            </ul>
+            <p>很简单的题，为了减少内存用了数组没用map。</p>
+            <pre><code class="lang-java">public String decodeMessage(String key, String message) {
+        char[] set = new char[26];
+        StringBuilder sb = new StringBuilder();
+        int count = 0;
+        for(int i = 0;i&lt;key.length();i++) {
+            if(key.charAt(i) == &#39; &#39;){
+                continue;
+            }
+            if(set[key.charAt(i)- &#39;a&#39;] == (char) 0 ) {
+                set[key.charAt(i) - &#39;a&#39;] = (char) (&#39;a&#39; + count);
+                count++;
+            }
+        }
+        for(int i = 0; i &lt; message.length();i++){
+            if(message.charAt(i) == &#39; &#39;){
+                sb.append(&quot; &quot;);
+            }else {
+                sb.append(set[message.charAt(i) - &#39;a&#39;]);
+            }
+        }
+        return sb.toString();
+    }
+            </code></pre>
+            <p>
+              <img
+                src="https://cdn.nlark.com/yuque/0/2023/png/32645868/1675247677569-72f56fb0-482d-454c-8b7a-35934a52a7b9.png#averageHue=%23faf8f7&amp;clientId=u7e96afbd-3157-4&amp;from=paste&amp;height=142&amp;id=uec1b04c9&amp;name=image.png&amp;originHeight=142&amp;originWidth=440&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=13039&amp;status=done&amp;style=none&amp;taskId=u322298c9-bfc4-4204-8304-29962ea41b2&amp;title=&amp;width=440"
+                alt="image.png"
+              />
+            </p>
           </section>
         </div>
       </div>
